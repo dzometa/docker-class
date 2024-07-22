@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  app-a:
+    container_name: app-A
+    build: app-A
+    ports:
+      - "127.0.0.1:8081:80"
+    volumes:
+      - ./app-A/app-web:/var/www/html/app-web
+      - ./app-A/log:/var/log/nginx
+    networks:
+      net-app:
+        ipv4_address: 192.168.2.5
+
+  app-b:
+    container_name: app-B
+    build: app-B
+    ports:
+      - "8082:80"
+    volumes:
+      - ./app-B/app-web:/var/www/html/app-web
+      - ./app-B/log:/var/log/nginx
+    networks:
+      net-app:
+        ipv4_address: 192.168.2.6
+        
+
+networks:
+  net-app:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+
+                
+
